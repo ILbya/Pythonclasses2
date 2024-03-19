@@ -1,0 +1,18 @@
+
+import requests
+from bs4 import BeautifulSoup
+response = requests.get("https://www.restoran.ru/msk/catalog/restaurants/kitchen/chefs/?page=1")
+soup = BeautifulSoup(response.text, 'html.parser')
+for post in soup.find_all('a', {'class': 'name'}):
+    print(post.get_text())
+for d in soup.find_all('div', {'class': 'rating-round-bg'}):
+    print(d.get_text())
+for tags in soup.find_all('div', {'class': 'props-wrap'}):
+    print(tags.get_text())
+for bill in soup.find_all('span', {'class': 'average-bill'}):
+    print(bill.get_text())
+for ll in soup.find_all('html',{'class':'reviews-link'}).url:
+    response = requests.get(ll)
+    soup = BeautifulSoup(response.text, 'html.parser')
+    for n in soup.find_all('div', {'class': 'review-text-wrap'}):
+        print(n.get_text())
